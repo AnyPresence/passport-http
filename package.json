@@ -1,0 +1,18 @@
+{
+  "name": "passport-http",
+  "version": "0.0.1",
+  "description": "AnyPresence passport-http strategy for Passport.js",
+  "main": "lib/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/AnyPresence/passport-http"
+  },
+  "author": "AnyPresence",
+  "readmeFilename": "README.md",
+  "dependencies": {
+
+    },
+    "devDependencies": {
+      
+    }
+}
