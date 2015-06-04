@@ -3,6 +3,9 @@
   "version": "0.0.1",
   "description": "AnyPresence passport-http strategy for Passport.js",
   "main": "lib/index.js",
+  "scripts": {
+        "test": "NODE_ENV=test mocha test --recursive"
+    },
   "repository": {
     "type": "git",
     "url": "git://github.com/AnyPresence/passport-http"
@@ -10,9 +13,10 @@
   "author": "AnyPresence",
   "readmeFilename": "README.md",
   "dependencies": {
-
-    },
-    "devDependencies": {
-      
-    }
+    "lodash": "3.9.3"
+  },
+  "devDependencies": {
+    "chai": "3.0.0",
+    "mocha": "2.2.5"
+  }
 }
