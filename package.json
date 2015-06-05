@@ -13,7 +13,8 @@
   "author": "AnyPresence",
   "readmeFilename": "README.md",
   "dependencies": {
-    "lodash": "3.9.3"
+    "lodash": "3.9.3",
+    "handlebars": "3.0.3"
   },
   "devDependencies": {
     "chai": "3.0.0",

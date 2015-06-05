@@ -38,32 +38,44 @@ describe('Strategy', function() {
                 headers: {
                     "token": "secret"
                 },
+                bodyTemplate: "{{something}}",
                 responseHandler: function() {}
             };
             strategy = new Strategy(options, noop);
         });
 
         it('should assign url', function() {
+            assert(strategy.url, 'Missing url');
             assert.equal(options.url, strategy.url);
         });
 
         it('should assign verb', function() {
+            assert(strategy.verb, 'Missing verb');
            assert.equal(options.verb, strategy.verb);
         });
 
         it('should assign basicAuth', function() {
+            assert(strategy.basicAuth, 'Missing basicAuth');
             assert.equal(options.basicAuth, strategy.basicAuth);
         });
 
         it('should assign parameters', function() {
+            assert(strategy.parameters, 'Missing parameters');
             assert.equal(options.parameters, strategy.parameters);
         });
 
         it('should assign headers', function() {
+            assert(strategy.headers, 'Missing headers');
             assert.equal(options.headers, strategy.headers);
         });
 
+        it('should assign bodyTemplate', function() {
+            assert(strategy.bodyTemplate, 'Missing bodyTemplate');
+            assert.equal(options.bodyTemplate, strategy.bodyTemplate);
+        });
+
         it('should assign responseHandler', function() {
+            assert(strategy.responseHandler, 'Missing responseHandler');
             assert.equal(options.responseHandler, strategy.responseHandler);
         });
     });
@@ -77,7 +89,7 @@ describe('Strategy', function() {
         });
 
         it('should accept 2 parameters: req and options', function() {
-            assert.equal()
+            assert.equal(strategy.authenticate.length, 2);
         });
     });
 });
