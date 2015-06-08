@@ -31,13 +31,15 @@ describe('Strategy', function() {
             options = {
                 url: 'http://somesite.com',
                 verb: 'post',
-                basicAuth: 'abcabc',
+                username: 'user',
+                password: 'password',
                 parameters: {
                     "test": "value"
                 },
                 headers: {
                     "token": "secret"
                 },
+                format: 'json',
                 bodyTemplate: "{{something}}",
                 responseHandler: function() {}
             };
@@ -54,9 +56,14 @@ describe('Strategy', function() {
            assert.equal(options.verb, strategy.verb);
         });
 
-        it('should assign basicAuth', function() {
-            assert(strategy.basicAuth, 'Missing basicAuth');
-            assert.equal(options.basicAuth, strategy.basicAuth);
+        it('should assign username', function() {
+            assert(strategy.username, 'Missing username');
+            assert.equal(options.username, strategy.username);
+        });
+
+        it('should assign password', function() {
+            assert(strategy.password, 'Missing password');
+            assert.equal(options.password, strategy.password);
         });
 
         it('should assign parameters', function() {
@@ -77,6 +84,11 @@ describe('Strategy', function() {
         it('should assign responseHandler', function() {
             assert(strategy.responseHandler, 'Missing responseHandler');
             assert.equal(options.responseHandler, strategy.responseHandler);
+        });
+
+        it('should assign format', function() {
+            assert(strategy.format, 'Missing format');
+            assert.equal(options.format, strategy.format);
         });
     });
 

@@ -1,34 +1,34 @@
 var assert          = require('chai').assert,
-    interpolator    = require('../../lib/interpolator');
+    interpolate    = require('../../lib/interpolate');
 
-describe('Interpolator', function() {
+describe('Interpolate', function() {
     it('should export as function', function() {
-        assert.isFunction(interpolator);
+        assert.isFunction(interpolate);
     });
 
     it('should accept 2 parameters: payload and context', function() {
-        assert.equal(interpolator.length, 2);
+        assert.equal(interpolate.length, 2);
     });
 
     describe('with bad values', function() {
         it('should return undefined if supplied a null payload value', function() {
-            var res = interpolator(null, {});
+            var res = interpolate(null, {});
             assert(typeof res === 'undefined');
         });
 
-        it('should return undefined if supplied a null context value', function() {
-            var res = interpolator('A string', null);
-            assert(typeof res === 'undefined');
+        it('should return payload if supplied a null context value', function() {
+            var res = interpolate('A string', null);
+            assert(res === 'A string');
         });
 
         it('should return undefined if supplied undefined payload value', function() {
-            var res = interpolator(undefined, {});
+            var res = interpolate(undefined, {});
             assert(typeof res === 'undefined');
         });
 
         it('should return undefined if supplied undefined context value', function() {
-            var res = interpolator('A string', undefined);
-            assert(typeof res === 'undefined');
+            var res = interpolate('A string', undefined);
+            assert(res === 'A string');
         });
     });
 
@@ -43,13 +43,13 @@ describe('Interpolator', function() {
         });
 
         it('should properly interpolate the string', function() {
-            var res = interpolator(source, context);
+            var res = interpolate(source, context);
             assert.equal(res, "My name is Fred");
         });
 
         it("should return the original source if there is nothing to interpolate", function() {
             source = "Just a string";
-            var res = interpolator(source, context);
+            var res = interpolate(source, context);
             assert.equal(res, "Just a string");
         });
     });
@@ -66,20 +66,20 @@ describe('Interpolator', function() {
         });
 
         it('should interpolate each value in the array', function() {
-            var res = interpolator(source, context);
+            var res = interpolate(source, context);
             assert.equal(res[0], 'Test One');
             assert.equal(res[1], 'Test Two');
         });
 
         it('should return an empty array if an empty array is supplied', function() {
             source = [];
-            var res = interpolator(source, context);
+            var res = interpolate(source, context);
             assert.equal(res.length, [].length);
         });
 
         it('should not interpolate an array value that is not a string', function() {
             source = [445];
-            var res = interpolator(source, context);
+            var res = interpolate(source, context);
             assert.equal(res[0], 445);
         });
     });
@@ -102,13 +102,13 @@ describe('Interpolator', function() {
         });
 
         it('should interpolate each value in the object', function() {
-            var res = interpolator(source, context);
+            var res = interpolate(source, context);
             assert.equal(res.token, 'secret');
             assert.equal(res.password, 'pa55w0rd');
         });
 
         it('should not interpolate sub objects', function() {
-            var res = interpolator(source, context);
+            var res = interpolate(source, context);
             assert.equal(res.subObject.foo, 'bar');
         });
 
@@ -116,7 +116,7 @@ describe('Interpolator', function() {
             var source = {
                 notString: 445
             };
-            var res = interpolator(source, context);
+            var res = interpolate(source, context);
             assert.equal(res.notString, 445);
         });
 
