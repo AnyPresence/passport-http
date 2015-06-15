@@ -2,7 +2,8 @@
 
 var assert      = require('chai').assert,
     HttpHelper  = require('../../lib/http-helper'),
-    Strategy    = require('../../lib/strategy');
+    Strategy    = require('../../lib/strategy'),
+    nock        = require('nock');
 
 var noop = function() {};
 
@@ -21,13 +22,13 @@ describe('HttpHelper', function() {
         });
 
         it('should assign the strategy property', function() {
-            var strategy = new Strategy(strategyOptions);
+            var strategy = new Strategy(strategyOptions, noop);
             var helper = new HttpHelper(strategy);
             assert.equal(helper.strategy, strategy);
         });
 
         it('should assign the context property', function() {
-            var strategy = new Strategy(strategyOptions);
+            var strategy = new Strategy(strategyOptions, noop);
             var context = { value: 'abc123' };
             var helper = new HttpHelper(strategy, context);
             assert.equal(helper.strategy, strategy);
@@ -135,6 +136,133 @@ describe('HttpHelper', function() {
 
                 var headers = helper.constructHeaders();
                 assert.equal(headers['Accept'], 'crappy/extension');
+            });
+        });
+    });
+
+    describe('constructBody', function() {
+        it('should return an empty string if there is no body template', function() {
+            var options = {
+                format: 'json'
+            };
+
+            var strategy = new Strategy(options, noop);
+            var helper = new HttpHelper(strategy);
+
+            var body = helper.constructBody();
+            assert.equal(body, '');
+        });
+
+        it('should return an empty string if the bodyTemplate is an empty string', function() {
+            var options = {
+                format: 'json',
+                bodyTemplate: ''
+            };
+
+            var strategy = new Strategy(options, noop);
+            var helper = new HttpHelper(strategy);
+
+            var body = helper.constructBody();
+            assert.equal(body, '');
+        });
+
+        it('should interpolate a simple body template', function() {
+            var options = {
+                bodyTemplate: '{"value": "{{value}}"}'
+            };
+            var context = {
+                value: "abc123"
+            };
+
+            var strategy = new Strategy(options, noop);
+            var helper = new HttpHelper(strategy, context);
+
+            var body = helper.constructBody();
+            assert.equal(body, '{"value": "abc123"}');
+        });
+
+        it('should interpolate a more complex body', function() {
+            var options = {
+                bodyTemplate: '{"nested": {"nestedValue": "{{value}}", "anotherNested": {"anotherNestedValue": "{{nestedValue}}"}}'
+            };
+            var context = {
+                value: 'some value',
+                nestedValue: 'another value'
+            };
+
+            var strategy = new Strategy(options, noop);
+            var helper = new HttpHelper(strategy, context);
+
+            var body = helper.constructBody();
+            assert.equal(body, '{"nested": {"nestedValue": "some value", "anotherNested": {"anotherNestedValue": "another value"}}');
+        });
+    });
+
+    describe('constructUrl', function() {
+        it('should return the configured url if there are no parameters', function() {
+            var options = {
+                parameters: {},
+                url: 'http://somesite.com/'
+            };
+
+            var strategy = new Strategy(options, noop);
+            var helper = new HttpHelper(strategy, context);
+
+            var url = helper.constructUrl();
+            assert.equal(url, options.url);
+        });
+
+        it('should append a parameter to the url', function() {
+            var options = {
+                parameters: {
+                    'val': 'abc123'
+                },
+                url: 'http://somesite.com'
+            };
+
+            var strategy = new Strategy(options, noop);
+            var helper = new HttpHelper(strategy, context);
+
+            var url = helper.constructUrl();
+            assert.equal(url, 'http://somesite.com?val=abc123');
+        });
+    });
+
+    describe('makeRequest', function() {
+        var options;
+
+        beforeEach(function() {
+            options = {
+                url: 'http://localhost/api'
+            };
+        });
+
+        it('should make a simple request', function(done) {
+            nock('http://localhost')
+                .get('/api')
+                .reply(200);
+
+            var strategy = new Strategy(options, noop);
+            var helper = new HttpHelper(strategy, {});
+
+            helper.makeRequest(function(err) {
+                done(err);
+            });
+        });
+
+        it('should use the correct Content-Type headers', function(done) {
+            options.format = 'json';
+
+            nock('http://localhost')
+                .matchHeader('Content-Type', 'application/json')
+                .get('/api')
+                .reply(200);
+
+            var strategy = new Strategy(options, noop);
+            var helper = new HttpHelper(strategy, {});
+
+            helper.makeRequest(function(err) {
+                done(err);
             });
         });
     });

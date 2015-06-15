@@ -1,23 +1,26 @@
 {
-    "name": "passport-http",
-    "version": "0.0.1",
-    "description": "AnyPresence passport-http strategy for Passport.js",
-    "main": "lib/index.js",
-    "scripts": {
-        "test": "NODE_ENV=test mocha test --recursive"
-    },
-    "repository": {
-        "type": "git",
-        "url": "git://github.com/AnyPresence/passport-http"
-    },
-    "author": "AnyPresence",
-    "readmeFilename": "README.md",
-    "dependencies": {
-        "lodash": "3.9.3",
-        "handlebars": "3.0.3"
-    },
-    "devDependencies": {
-        "chai": "3.0.0",
-        "mocha": "2.2.5"
-    }
+  "name": "passport-http",
+  "version": "0.0.1",
+  "description": "AnyPresence passport-http strategy for Passport.js",
+  "main": "lib/index.js",
+  "scripts": {
+    "test": "NODE_ENV=test mocha test --recursive"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/AnyPresence/passport-http"
+  },
+  "author": "AnyPresence",
+  "readmeFilename": "README.md",
+  "dependencies": {
+    "handlebars": "3.0.3",
+    "lodash": "3.9.3",
+    "nock": "^2.5.0",
+    "request": "2.57.0"
+  },
+  "devDependencies": {
+    "chai": "3.0.0",
+    "mocha": "2.2.5"
+  }
 }

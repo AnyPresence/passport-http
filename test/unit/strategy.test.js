@@ -90,6 +90,11 @@ describe('Strategy', function() {
             assert(strategy.format, 'Missing format');
             assert.equal(options.format, strategy.format);
         });
+
+        it('should assign the _verify function', function() {
+            assert(strategy._verify, 'Missing verify callback');
+            assert(typeof strategy._verify === 'function');
+        });
     });
 
     describe('authenticate', function() {
