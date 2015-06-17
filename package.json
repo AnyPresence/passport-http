@@ -16,7 +16,8 @@
   "dependencies": {
     "handlebars": "3.0.3",
     "lodash": "3.9.3",
-    "nock": "^2.5.0",
+    "nock": "2.5.0",
+    "passport-strategy": "1.0.0",
     "request": "2.57.0"
   },
   "devDependencies": {

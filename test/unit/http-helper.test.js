@@ -233,7 +233,8 @@ describe('HttpHelper', function() {
 
         beforeEach(function() {
             options = {
-                url: 'http://localhost/api'
+                url: 'http://localhost/api',
+                format: 'json'
             };
         });
 
