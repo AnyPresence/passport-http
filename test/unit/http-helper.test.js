@@ -226,6 +226,25 @@ describe('HttpHelper', function() {
             var url = helper.constructUrl();
             assert.equal(url, 'http://somesite.com?val=abc123');
         });
+
+        it('should properly interpolate a parameter', function() {
+            var options = {
+                parameters: {
+                    'name': '{{name}}'
+                },
+                url: 'http://somesite.com'
+            };
+
+            var context = {
+                name: 'fred'
+            };
+
+            var strategy = new Strategy(options, noop);
+            var helper = new HttpHelper(strategy, context);
+
+            var url = helper.constructUrl();
+            assert.equal(url, 'http://somesite.com?name=fred');
+        });
     });
 
     describe('makeRequest', function() {
