@@ -63,7 +63,7 @@ describe('HttpHelper', function() {
 
             it('should be correctly set for form-encoded', function() {
                 var options = {
-                    format: 'form-encoded'
+                    format: 'form_encoded'
                 };
                 var strategy = new Strategy(options, noop);
                 var helper = new HttpHelper(strategy);
