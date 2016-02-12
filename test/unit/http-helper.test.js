@@ -285,5 +285,41 @@ describe('HttpHelper', function() {
                 done(err);
             });
         });
+
+        it('should parse a json body even if the format is not json, if the response content-type is applicatoin/json', function(done) {
+            options.format = 'form_encoded';
+
+            // Mock a response with a string representation of a JSON object and the correct response content-type header.
+            nock('http://localhost')
+                .get('/api')
+                .reply(200, '{"value": "abc"}', {'Content-Type': 'application/json'});
+
+            var strategy = new Strategy(options, noop);
+            var helper = new HttpHelper(strategy, {});
+
+            helper.makeRequest(function(err, response, result) {
+                assert(result);
+                assert.isObject(result); // Result should be a properly parsed JSON object and NOT a string.
+                done(err);
+            });
+        });
+
+        it('should not parse a json body if the format is not json but the response content-type header is not set', function(done) {
+            options.format = 'form_encoded';
+
+            // Mock a response with a string representation of a JSON object but no content-type header.
+            nock('http://localhost')
+                .get('/api')
+                .reply(200, '{"value": "abc"}');
+
+            var strategy = new Strategy(options, noop);
+            var helper = new HttpHelper(strategy, {});
+
+            helper.makeRequest(function(err, response, result) {
+                assert(result);
+                assert.isString(result); // Result should still be a string, as the content type was not set in the response
+                done(err);
+            });
+        });
     });
 });
