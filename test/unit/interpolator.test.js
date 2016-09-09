@@ -141,7 +141,7 @@ describe('Interpolate', function() {
 
         it('should interpolate the values correctly', function() {
             var res = interpolate(source, context, headers);
-            assert.equal(res, 'username=foo%2Bbar%20baz&password=%21%40%23&token=abc');
+            assert.equal(res, 'username=foo%2Bbar%20baz&password=!%40%23&token=abc');
         });
     })
 });
