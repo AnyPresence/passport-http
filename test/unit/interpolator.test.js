@@ -6,8 +6,8 @@ describe('Interpolate', function() {
         assert.isFunction(interpolate);
     });
 
-    it('should accept 2 parameters: payload and context', function() {
-        assert.equal(interpolate.length, 2);
+    it('should accept 3 parameters: payload, context and headers', function() {
+        assert.equal(interpolate.length, 3);
     });
 
     describe('with bad values', function() {
@@ -121,4 +121,27 @@ describe('Interpolate', function() {
         });
 
     });
+
+    describe('for a url encoded string', function() {
+        var source, context, headers;
+
+        beforeEach(function() {
+            source = "username={{username}}&password={{password}}&token={{misc.token}}";
+            context = {
+                username: "foo+bar baz",
+                password: "!@#",
+                misc: {
+                    token: "abc"
+                }
+            };
+            headers = {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            };
+        });
+
+        it('should interpolate the values correctly', function() {
+            var res = interpolate(source, context, headers);
+            assert.equal(res, 'username=foo%2Bbar%20baz&password=!%40%23&token=abc');
+        });
+    })
 });
