@@ -143,5 +143,11 @@ describe('Interpolate', function() {
             var res = interpolate(source, context, headers);
             assert.equal(res, 'username=foo%2Bbar%20baz&password=!%40%23&token=abc');
         });
+
+        it('should not escape a single quote', function() {
+            context.username="'foo'";
+            var res = interpolate(source, context, headers);
+            assert.equal(res, "username='foo'&password=!%40%23&token=abc");
+        });
     })
 });
